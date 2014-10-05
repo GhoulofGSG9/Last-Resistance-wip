@@ -522,21 +522,16 @@ local function UpdateEggGeneration(self)
 
 end
 
-local function UpdateAlienSpectators(self)
+function AlienTeam:UpdateAlienSpectators()
 
-
-  local alienSpectators = self:GetSortedRespawnQueue()
-			for i = 1, #alienSpectators do
-				local spec = alienSpectators[ i ]
-				self:RemovePlayerFromRespawnQueue( spec )
-				local success, newAlien = self:ReplaceRespawnPlayer( spec, nil, nil )
-				newAlien:SetCameraDistance( 0 )
-			
-       end
-    
-
-
-
+	local alienSpectators = self:GetSortedRespawnQueue()
+	for i = 1, #alienSpectators do
+		local spec = alienSpectators[ i ]
+		self:RemovePlayerFromRespawnQueue( spec )
+		local success, newAlien = self:ReplaceRespawnPlayer( spec, nil, nil )
+		newAlien:SetCameraDistance( 0 )
+	end
+end
 
 local function UpdateCystConstruction(self, deltaTime)
 
@@ -561,16 +556,13 @@ local function UpdateCystConstruction(self, deltaTime)
 end
 
 function AlienTeam:Update(timePassed)
-
+	
     PROFILE("AlienTeam:Update")
     
-    PlayingTeam.Update(self, timePassed)
-    
+    PlayingTeam.Update(self, timePassed)    
 
     self:UpdateTeamAutoHeal(timePassed)
-    UpdateEggGeneration(self)
-    UpdateEggCount(self)
-    UpdateAlienSpectators(self)
+    self:UpdateAlienSpectators()
     self:UpdateBioMassLevel()
     
     local shellLevel = 3
